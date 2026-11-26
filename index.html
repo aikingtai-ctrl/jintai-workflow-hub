@@ -195,9 +195,11 @@ window.addEventListener('DOMContentLoaded',function(){
     window.applyFilters = function(){
       var inp = document.getElementById('searchInput');
       var q = inp ? inp.value.trim().toLowerCase() : '';
+      var tokens = q ? q.split(/\s+/).filter(Boolean) : [];
       document.querySelectorAll('.wf-card').forEach(function(card){
         var matchCat = (window.currentCat === 'ALL') || (card.dataset.cat === window.currentCat);
-        var matchQ = !q || (card.dataset.search || '').includes(q);
+        var ds = card.dataset.search || '';
+        var matchQ = tokens.every(function(t){ return ds.indexOf(t) !== -1; });
         card.style.display = (matchCat && matchQ) ? '' : 'none';
       });
     };
